@@ -8,7 +8,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { reigsiter } from "./controllers/auth.js"
+import { register } from "./controllers/auth.js"
 
 /* CONFIG */
 const __filename = fileURLToPath(import.meta.url);
