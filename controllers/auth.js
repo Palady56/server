@@ -50,7 +50,8 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch) return res.status(400).json( { msg: "Неверные данные" })
 
-        const token = jwt.sign(  {id: user._id}, process.env.JWT_SECRET)
+        const token = jwt.sign( { id: user._id }, process.env.JWT_SECRET);
+        console.log('Generated Token:', token);
         delete user.password;
         res.status(200).json({ token, user })
 

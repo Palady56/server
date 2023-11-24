@@ -14,6 +14,9 @@ import postRoutes from "./routes/posts.js"
 import { register } from "./controllers/auth.js"
 import { createPost } from "./controllers/posts.js"
 import { verifyToken } from "./middleware/auth.js";
+import User from "./models/User.js"
+import Post from "./models/Post.js"
+import { users, posts } from "./data/index.js"
 
 /* CONFIG */
 const __filename = fileURLToPath(import.meta.url);
@@ -21,7 +24,7 @@ const __dirname = path.dirname(__filename)
 dotenv.config()
 const app = express()
 app.use(express.json())
-app.use(helmet)
+app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
 app.use(morgan("common"))
 app.use(express.json({ limit: "30mb", extended: true }))
@@ -57,5 +60,19 @@ mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
-    app.listen(PORT, () => console.log(`Сервер запущен на порте: ${PORT}`))
+    app.listen(PORT, () => console.log(`Сервер запущен на порте: ${PORT}`));
+
+    /* Заполняется единожды !!!*/
+
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+    
 }).catch((error) => console.log(`${error} Сервер не подключен`));
+
+app.options("*", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.status(200).end();
+  });
+  
